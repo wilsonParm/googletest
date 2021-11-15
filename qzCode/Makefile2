@@ -1,0 +1,41 @@
+COMPILE_PATH :=
+CC=${COMPILE_PATH}gcc
+CXX=${COMPILE_PATH}g++
+STRIP=${COMPILE_PATH}strip
+
+STATIC ?= n
+
+EXEC := wilsonCode
+
+LOCAL_PATH=$(shell pwd)
+OBJS := $(patsubst %.c,%.o,$(wildcard *.c))
+OBJS := $(patsubst %.cpp,%.o,$(wildcard *.cpp))
+
+EXFLAGS :=
+#CFLAGS  +=  -std=c++11 -Wall -O3 -Os -g -fprofile-arcs -m32
+CFLAGS  +=  -std=c++11 -Wall
+CFLAGS 	+= -I$(LOCAL_PATH)/../googletest/include
+LDFLAGS += -L$(LOCAL_PATH)/../mgbuild/lib
+LIBS 	+= -lgtest -lpthread
+
+all: ${EXEC}
+
+${EXEC}: ${OBJS}
+	${CXX} $^ -o $@ ${CFLAGS} ${LDFLAGS} ${LIBS} ${EXFLAGS}
+	${STRIP} $@
+
+%.o : %.cpp
+	${CXX} -c ${CFLAGS} $< -o $@
+
+%.o : %.cc
+	${CXX} -c ${CFLAGS} $< -o $@
+
+%.o : %.c
+	${CC} -c ${CFLAGS} $< -o $@
+
+install:
+	cp ${EXEC} ../bin
+
+clean:
+	rm -f ${OBJS} ${EXEC}
+

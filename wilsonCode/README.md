@@ -8,13 +8,27 @@ cmake -Dgtest_build_tests=ON -Dgmock_build_tests=ON ${GTEST_REPO_DIR}
 ```
 
 - #↑这里不要Dgmock_build_tests=ON只要Dgtest_build_tests
-- GTEST_REPO_DIR} 为gtest目标文件夹 = .即可
+
+- GTEST_REPO_DIR} 为gtest目标文件夹 = ..即可
+
+  ```
+  cmake -Dgtest_build_tests=ON  ..
+  ```
+
+- 若要使用全志编译链
+
+  ```
+  cmake -Dgtest_build_tests=ON  -DCMAKE_CXX_COMPILER=/opt/allwinner/toolchain-sunxi-musl/toolchain/bin/arm-openwrt-linux-muslgnueabi-g++  ..
+  ```
+
+  
+
 - 所以执行以下，即可生成.a和.h文件
 
 ```shell
 mkdir mybuild
 cd mybuild
-cmake -Dgtest_build_tests=ON .
+cmake -Dgtest_build_tests=ON ..
 make;make install
 ```
 
